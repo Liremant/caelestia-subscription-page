@@ -12,10 +12,10 @@ I need fixes in js. There's a planned redesign of customer tabs. I'm tired of do
 
 ## screenshots
 
-![[dark.png]]
-![[mobile_dark.png]]
+<div align="center">
+  <img src="./dark.png" width="75%" alt="تم روشن">
+  <img src="./mobile_dark.png" width="75%" alt="تم تاریک">
+  <img src="./light.png" width="75%" alt="بخش برنامه‌ها">
+  <img src="./mobile_light.png" width="75%" alt="راهنمای نصب">
+</div>
 
----
-
-![[light.png]]
-![[mobile_light.png]]
