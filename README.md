@@ -4,12 +4,14 @@ vibecoded 100%
 
 I need fixes in js. There's a planned redesign of customer tabs. I'm tired of doing this—please fix it.
 
+for remnawave
+
 ## ru
 вайбкодированно 100%
 
 Нужны фиксы в js.планируется переработка вкладок клиентов.Я заебался это делать,почините это,пожалуйста.
 
-
+for remnawave
 ## screenshots
 
 <div align="center">
