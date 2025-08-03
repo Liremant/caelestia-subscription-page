@@ -1,0 +1,455 @@
+ndows': 'windows',
+            'macos': 'macos',
+            'linux': 'linux'
+        };
+
+        const contentId = platformMap[platform] || platform;
+        const contentElement = document.getElementById(`content-${contentId}`);
+        if (contentElement) {
+            contentElement.classList.add('active');
+        }
+
+        this.currentPlatform = platform;
+    }
+
+    renderClients() {
+        // Render Android clients
+        this.renderPlatformClients('android', 'android-clients');
+
+        // Render iOS clients
+        this.renderPlatformClients('ios', 'ios-clients');
+
+        // Render PC clients for Windows, macOS, and Linux
+        this.renderPlatformClients('pc', 'windows-clients');
+        this.renderPlatformClients('pc', 'macos-clients');
+        this.renderPlatformClients('pc', 'linux-clients');
+    }
+
+    renderPlatformClients(configPlatform, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container || !this.clientsConfig[configPlatform]) return;
+
+        const clients = this.clientsConfig[configPlatform];
+        container.innerHTML = '';
+
+        clients.forEach(client => {
+            const clientElement = this.createClientElement(client);
+            container.appendChild(clientElement);
+        });
+    }
+
+    createClientElement(client) {
+        const clientDiv = document.createElement('div');
+        clientDiv.className = `client-item ${client.isFeatured ? 'featured' : ''}`;
+
+        const clientIcon = client.name.charAt(0).toUpperCase();
+        const installButtons = client.installationStep?.buttons || [];
+        const description = client.installationStep?.description?.ru || 'Установите клиент';
+
+        clientDiv.innerHTML = `
+            <div class="client-header">
+                <div class="client-icon">${clientIcon}</div>
+                <div class="client-info">
+                    <h4>${client.name}</h4>
+                    <p>${description}</p>
+                </div>
+            </div>
+            <div class="client-actions">
+                ${installButtons.map(button => `
+                    <a href="${button.buttonLink}" target="_blank" class="client-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/>
+                            <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        ${button.buttonText?.ru || 'Скачать'}
+                    </a>
+                `).join('')}
+                <button class="client-btn primary" onclick="clientManager.openInClient('${client.id}', '${client.urlScheme}', ${client.isNeedBase64Encoding || false})">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="15,3 21,3 21,9" stroke="currentColor" stroke-width="2"/>
+                        <line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Открыть в ${client.name}
+                </button>
+            </div>
+        `;
+
+        return clientDiv;
+    }
+
+    openInClient(clientId, urlScheme, needsBase64 = false) {
+        if (!this.subscriptionUrl) {
+            this.showError('Ссылка подписки не найдена');
+            return;
+        }
+
+        let finalUrl = this.subscriptionUrl;
+
+        if (needsBase64) {
+            finalUrl = btoa(finalUrl);
+        }
+
+        const clientUrl = urlScheme + encodeURIComponent(finalUrl);
+
+        try {
+            window.location.href = clientUrl;
+            this.showToast(`Попытка открыть в ${clientId}...`);
+
+            // If no client opens, show instructions after a delay
+            setTimeout(() => {
+                this.showToast('Если клиент не открылся, установите его сначала');
+            }, 3000);
+        } catch (error) {
+            console.error('Failed to open client:', error);
+            this.showError('Не удалось открыть клиент');
+        }
+    }
+
+    loadMockData() {
+        // Имитация загрузки данных (в реальном приложении это будет API запрос)
+        setTimeout(() => {
+            this.userData = {
+                username: 'user_demo',
+                status: 'active',
+                expire: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 дней от сейчас
+                used_traffic: 15 * 1024 * 1024 * 1024, // 15 GB
+                data_limit: 100 * 1024 * 1024 * 1024, // 100 GB
+                currentDateTime: new Date().toISOString()
+            };
+
+            this.subscriptionUrl = 'vmess://eyJhZGQiOiIxMjcuMC4wLjEiLCJhaWQiOiIwIiwiaG9zdCI6IiIsImlkIjoiYWJjZGVmZ2gtaWprbC1tbm9wLXFyc3QtdXZ3eHl6MTIzNCIsIm5ldCI6InRjcCIsInBhdGgiOiIiLCJwb3J0IjoiMTIzNCIsInBzIjoiRGVtbyBTZXJ2ZXIiLCJzY3kiOiJhdXRvIiwic25pIjoiIiwidGxzIjoiIiwidHlwZSI6Im5vbmUiLCJ2IjoiMiJ9';
+
+            this.renderData();
+        }, 1000);
+    }
+
+    renderData() {
+        try {
+            // Username
+            const usernameEl = document.getElementById('username');
+            if (usernameEl) {
+                usernameEl.textContent = this.userData.username || 'Пользователь';
+            }
+
+            // Status
+            const statusEl = document.getElementById('status');
+            if (statusEl) {
+                const statusText = this.getStatusText(this.userData.status);
+                statusEl.textContent = statusText;
+                statusEl.className = `user-status ${this.userData.status === 'active' ? '' : 'inactive'}`;
+            }
+
+            // Expiry date
+            const expiryEl = document.getElementById('expire_date');
+            if (expiryEl) {
+                expiryEl.textContent = this.userData.expire
+                    ? this.formatDate(this.userData.expire)
+                    : 'Неизвестно';
+            }
+
+            // Traffic usage
+            const usedTrafficEl = document.getElementById('used_traffic');
+            const dataLimitEl = document.getElementById('data_limit');
+
+            if (usedTrafficEl && this.userData.used_traffic) {
+                usedTrafficEl.textContent = this.formatTraffic(this.userData.used_traffic);
+            }
+
+            if (dataLimitEl && this.userData.data_limit) {
+                dataLimitEl.textContent = this.formatTraffic(this.userData.data_limit);
+            }
+
+            // Progress bar
+            this.updateProgressBar();
+
+            // Subscription URL
+            const subUrlEl = document.getElementById('subscription-url');
+            if (subUrlEl) {
+                subUrlEl.value = this.subscriptionUrl;
+            }
+
+            // Update progress labels
+            const progressUsed = document.getElementById('progress_used');
+            const progressTotal = document.getElementById('progress_total');
+
+            if (progressUsed && this.userData.used_traffic) {
+                progressUsed.textContent = this.formatTraffic(this.userData.used_traffic);
+            }
+
+            if (progressTotal && this.userData.data_limit) {
+                progressTotal.textContent = this.formatTraffic(this.userData.data_limit);
+            }
+
+        } catch (error) {
+            console.error('Error rendering data:', error);
+            this.showError('Ошибка при отображении данных');
+        }
+    }
+
+    updateProgressBar() {
+        const progressEl = document.getElementById('usage_progress');
+        if (progressEl && this.userData.used_traffic && this.userData.data_limit) {
+            const percentage = Math.min((this.userData.used_traffic / this.userData.data_limit) * 100, 100);
+            progressEl.style.width = `${percentage}%`;
+        }
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            'active': 'Активен',
+            'disabled': 'Отключен',
+            'limited': 'Ограничен',
+            'expired': 'Истёк'
+        };
+        return statusMap[status] || status;
+    }
+
+    formatDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    formatTraffic(bytes) {
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes === 0) return '0 B';
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    async copySubscriptionUrl() {
+        try {
+            const subscriptionInput = document.getElementById('subscription-url');
+            if (!subscriptionInput || !subscriptionInput.value) {
+                this.showError('Ссылка подписки не найдена');
+                return;
+            }
+
+            await navigator.clipboard.writeText(subscriptionInput.value);
+            this.showToast('Ссылка подписки скопирована!');
+
+            // Visual feedback
+            const copyButton = document.getElementById('copyButton');
+            if (copyButton) {
+                copyButton.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    copyButton.style.transform = '';
+                }, 150);
+            }
+        } catch (error) {
+            console.error('Failed to copy:', error);
+
+            // Fallback for older browsers
+            const subscriptionInput = document.getElementById('subscription-url');
+            if (subscriptionInput) {
+                subscriptionInput.select();
+                document.execCommand('copy');
+                this.showToast('Ссылка подписки скопирована!');
+            } else {
+                this.showError('Не удалось скопировать ссылку');
+            }
+        }
+    }
+
+    showQRCode() {
+        const modal = document.getElementById('qrModal');
+        const qrContainer = document.getElementById('qrContainer');
+
+        if (!modal || !qrContainer) return;
+
+        modal.classList.add('show');
+
+        // Generate QR code (using a simple text representation for demo)
+        // In a real application, you would use a QR code library like qrcode.js
+        this.generateQRCode(qrContainer, this.subscriptionUrl);
+    }
+
+    generateQRCode(container, text) {
+        // Simple QR code placeholder (in real app, use qrcode.js or similar)
+        container.innerHTML = `
+            <div style="
+                width: 200px;
+                height: 200px;
+                background: linear-gradient(45deg, #6750A4, #7D5260);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 600;
+                text-align: center;
+                padding: 20px;
+                box-sizing: border-box;
+            ">
+                <div>
+                    <div style="font-size: 24px; margin-bottom: 8px;">📱</div>
+                    <div style="font-size: 14px;">QR код для<br>подписки</div>
+                </div>
+            </div>
+            <p style="margin-top: 16px; text-align: center; color: var(--on-surface-variant); font-size: 14px;">
+                Отсканируйте этот код в вашем VPN клиенте
+            </p>
+        `;
+    }
+
+    hideModal() {
+        const modal = document.getElementById('qrModal');
+        if (modal) {
+            modal.classList.remove('show');
+        }
+    }
+
+    showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        if (toast && toastMessage) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    }
+
+    showError(message) {
+        // Create error toast
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        if (toast && toastMessage) {
+            toast.style.backgroundColor = 'var(--error-container)';
+            toast.style.color = 'var(--on-error-container)';
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                // Reset toast colors
+                setTimeout(() => {
+                    toast.style.backgroundColor = '';
+                    toast.style.color = '';
+                }, 300);
+            }, 4000);
+        }
+    }
+}
+
+// Animation Utils
+class AnimationUtils {
+    static observeElements() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe cards and sections
+        document.querySelectorAll('.card, .stat-card, .hero').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    }
+
+    static addHoverEffects() {
+        // Add subtle hover effects to interactive elements
+        document.querySelectorAll('.card, .stat-card, .btn').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    }
+}
+
+// Performance Utils
+class PerformanceUtils {
+    static preloadImages() {
+        // Preload any images that might be used
+        const imageUrls = [
+            // Add any image URLs here
+        ];
+
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+        });
+    }
+
+    static optimizeAnimations() {
+        // Reduce animations for users who prefer reduced motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.setProperty('--transition-fast', '0.01ms');
+            document.documentElement.style.setProperty('--transition-normal', '0.01ms');
+            document.documentElement.style.setProperty('--transition-slow', '0.01ms');
+        }
+    }
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize managers
+    const themeManager = new ThemeManager();
+    const clientManager = new ClientManager();
+
+    // Make clientManager globally available for onclick handlers
+    window.clientManager = clientManager;
+
+    // Initialize animations and performance optimizations
+    AnimationUtils.observeElements();
+    AnimationUtils.addHoverEffects();
+    PerformanceUtils.preloadImages();
+    PerformanceUtils.optimizeAnimations();
+
+    // Add loading state removal
+    setTimeout(() => {
+        document.body.classList.remove('loading');
+    }, 100);
+
+    console.log('Client Manager initialized successfully');
+});
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        // Refresh data when page becomes visible again
+        // In a real app, you might want to refresh subscription data
+        console.log('Page became visible, consider refreshing data');
+    }
+});
+
+// Handle online/offline status
+window.addEventListener('online', () => {
+    console.log('Connection restored');
+    // You might want to refresh data here
+});
+
+window.addEventListener('offline', () => {
+    console.log('Connection lost');
+    // You might want to show an offline indicator
+});
+
+// Export for potential external use
+window.SubscriptionManager = {
+    ThemeManager,
+    ClientManager,
+    AnimationUtils,
+    PerformanceUtils
+};
