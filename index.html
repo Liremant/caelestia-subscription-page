@@ -1,8 +1,1891 @@
-ndows': 'windows',
+<style>/* CSS Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Material You 3 Colors */
+    --primary: #6750A4;
+    --primary-container: #EADDFF;
+    --on-primary: #FFFFFF;
+    --on-primary-container: #21005D;
+    
+    --secondary: #625B71;
+    --secondary-container: #E8DEF8;
+    --on-secondary: #FFFFFF;
+    --on-secondary-container: #1D192B;
+    
+    --tertiary: #7D5260;
+    --tertiary-container: #FFD8E4;
+    --on-tertiary: #FFFFFF;
+    --on-tertiary-container: #31111D;
+    
+    --surface: #FEF7FF;
+    --surface-variant: #E7E0EC;
+    --on-surface: #1C1B1F;
+    --on-surface-variant: #49454F;
+    
+    --background: #FFFBFE;
+    --on-background: #1C1B1F;
+    
+    --error: #BA1A1A;
+    --error-container: #FFDAD6;
+    --on-error: #FFFFFF;
+    --on-error-container: #410002;
+    
+    --success: #006D3B;
+    --success-container: #7EF8B8;
+    --on-success: #FFFFFF;
+    --on-success-container: #002110;
+    
+    --outline: #79747E;
+    --outline-variant: #CAC4D0;
+    
+    /* Shadows */
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-2: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-3: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-4: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-5: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+    
+    /* Border Radius */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 30px;
+    --font-size-4xl: 36px;
+    --font-size-5xl: 48px;
+    
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 350ms ease;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --primary: #D0BCFF;
+    --primary-container: #4F378B;
+    --on-primary: #371E73;
+    --on-primary-container: #EADDFF;
+    
+    --secondary: #CCC2DC;
+    --secondary-container: #4A4458;
+    --on-secondary: #332D41;
+    --on-secondary-container: #E8DEF8;
+    
+    --tertiary: #EFB8C8;
+    --tertiary-container: #633B48;
+    --on-tertiary: #492532;
+    --on-tertiary-container: #FFD8E4;
+    
+    --surface: #10090D;
+    --surface-variant: #49454F;
+    --on-surface: #E6E1E5;
+    --on-surface-variant: #CAC4D0;
+    
+    --background: #10090D;
+    --on-background: #E6E1E5;
+    
+    --error: #FFB4AB;
+    --error-container: #93000A;
+    --on-error: #690005;
+    --on-error-container: #FFDAD6;
+    
+    --success: #5EDB95;
+    --success-container: #00522B;
+    --on-success: #003919;
+    --on-success-container: #7EF8B8;
+    
+    --outline: #938F99;
+    --outline-variant: #49454F;
+}
+
+/* Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--on-background);
+    background-color: var(--background);
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0 var(--space-6);
+    }
+}
+
+/* Header */
+.header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--outline-variant);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    transition: background-color var(--transition-normal);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--on-surface);
+}
+
+.logo-text {
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-variant);
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+    transform: scale(1.05);
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    padding: var(--space-8) 0;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin-bottom: var(--space-16);
+}
+
+.hero-title {
+    font-size: var(--font-size-4xl);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: var(--space-6);
+    color: var(--on-background);
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: var(--font-size-5xl);
+    }
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-description {
+    font-size: var(--font-size-lg);
+    color: var(--on-surface-variant);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Cards */
+.card {
+    background-color: var(--surface);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-2);
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-4);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.card-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0;
+}
+
+.card-description {
+    color: var(--on-surface-variant);
+    margin: var(--space-2) 0 0 0;
+    font-size: var(--font-size-sm);
+}
+
+/* User Section */
+.user-section {
+    margin-bottom: var(--space-12);
+}
+
+.user-card .card-header {
+    margin-bottom: 0;
+}
+
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    color: var(--on-primary);
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-name {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0 0 var(--space-1) 0;
+}
+
+.user-status {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    background-color: var(--success-container);
+    color: var(--on-success-container);
+}
+
+.user-status.inactive {
+    background-color: var(--error-container);
+    color: var(--on-error-container);
+}
+
+/* Stats Grid */
+.stats-section {
+    margin-bottom: var(--space-12);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.stat-card {
+    background-color: var(--surface);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    transition: all var(--transition-normal);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-3);
+    transform: translateY(-1px);
+}
+
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-title {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    margin: 0 0 var(--space-1) 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0;
+}
+
+/* Usage Section */
+.usage-section {
+    margin-bottom: var(--space-12);
+}
+
+.progress-container {
+    margin-top: var(--space-4);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--surface-variant);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: var(--space-3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--tertiary));
+    border-radius: var(--radius-sm);
+    transition: width var(--transition-slow);
+    width: 0%;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    color: var(--on-surface-variant);
+}
+
+/* Subscription Section */
+.subscription-section {
+    margin-bottom: var(--space-12);
+}
+
+.subscription-content {
+    margin-top: var(--space-4);
+}
+
+.input-group {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+}
+
+.subscription-input {
+    flex: 1;
+    padding: var(--space-4);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+}
+
+.subscription-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-container);
+}
+
+.copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-variant);
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.copy-button:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+    border-color: var(--primary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-3);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-container);
+    color: var(--on-secondary-container);
+    border: 1px solid var(--outline-variant);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-3);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--surface);
+    border-top: 1px solid var(--outline-variant);
+    padding: var(--space-8) 0;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.footer-text {
+    color: var(--on-surface-variant);
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    gap: var(--space-6);
+}
+
+.footer-link {
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-fast);
+}
+
+.footer-link:hover {
+    color: var(--primary);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--surface);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-5);
+    max-width: 400px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: modalSlideIn var(--transition-normal);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--outline-variant);
+}
+
+.modal-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0;
+}
+
+.modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+}
+
+.modal-body {
+    padding: var(--space-6);
+}
+
+.qr-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.qr-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    color: var(--on-surface-variant);
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    background-color: var(--success-container);
+    color: var(--on-success-container);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-4);
+    z-index: 1100;
+    transform: translateX(100%);
+    transition: transform var(--transition-normal);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+}
+
+.toast-icon {
+    flex-shrink: 0;
+}
+
+.toast-message {
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .hero-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        justify-content: center;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stats-grid {
+        gap: var(--space-4);
+    }
+    
+    .stat-card {
+        padding: var(--space-4);
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--outline-variant);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus styles */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card {
+        border-width: 2px;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+
+/* Client Selection Styles */
+.client-section {
+    margin-bottom: var(--space-12);
+}
+
+.client-card {
+    overflow: hidden;
+}
+
+/* Platform Tabs */
+.platform-tabs {
+    display: flex;
+    gap: var(--space-1);
+    margin-bottom: var(--space-6);
+    background-color: var(--surface-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.platform-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.platform-tab {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: transparent;
+    color: var(--on-surface-variant);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+.platform-tab:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+}
+
+.platform-tab.active {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    box-shadow: var(--shadow-2);
+}
+
+.platform-tab svg {
+    flex-shrink: 0;
+}
+
+/* Client Content */
+.client-content {
+    margin-bottom: var(--space-8);
+}
+
+.platform-content {
+    display: none;
+}
+
+.platform-content.active {
+    display: block;
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+    .clients-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+/* Client Card */
+.client-item {
+    background-color: var(--surface-variant);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.client-item:hover {
+    box-shadow: var(--shadow-3);
+    transform: translateY(-1px);
+    border-color: var(--primary);
+}
+
+.client-item.featured {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary-container), var(--surface-variant));
+}
+
+.client-item.featured::before {
+    content: 'Рекомендуется';
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    color: var(--on-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.client-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.client-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    color: var(--on-primary);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+}
+
+.client-info h4 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0 0 var(--space-1) 0;
+}
+
+.client-info p {
+    font-size: var(--font-size-sm);
+    color: var(--on-surface-variant);
+    margin: 0;
+}
+
+.client-actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.client-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-md);
+    background-color: var(--surface);
+    color: var(--on-surface);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.client-btn:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.client-btn.primary {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+}
+
+.client-btn.primary:hover {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+}
+
+.client-btn svg {
+    flex-shrink: 0;
+}
+
+/* Subscription URL Section */
+.subscription-url-section {
+    border-top: 1px solid var(--outline-variant);
+    padding-top: var(--space-6);
+    margin-top: var(--space-6);
+}
+
+.subscription-header {
+    margin-bottom: var(--space-4);
+}
+
+.subscription-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0 0 var(--space-1) 0;
+}
+
+.subscription-description {
+    font-size: var(--font-size-sm);
+    color: var(--on-surface-variant);
+    margin: 0;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 767px) {
+    /* Container adjustments */
+    .container {
+        padding: 0 var(--space-3);
+    }
+
+    /* Header mobile */
+    .header-content {
+        height: 56px;
+    }
+
+    .logo {
+        font-size: var(--font-size-base);
+    }
+
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Hero mobile */
+    .hero {
+        margin-bottom: var(--space-12);
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: var(--font-size-2xl);
+        line-height: 1.3;
+        margin-bottom: var(--space-4);
+    }
+
+    .hero-description {
+        font-size: var(--font-size-base);
+    }
+
+    /* Cards mobile */
+    .card {
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+    }
+
+    .card-title {
+        font-size: var(--font-size-lg);
+    }
+
+    /* Stats mobile */
+    .stats-grid {
+        gap: var(--space-3);
+    }
+
+    .stat-card {
+        padding: var(--space-4);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .stat-title {
+        font-size: var(--font-size-xs);
+    }
+
+    .stat-value {
+        font-size: var(--font-size-base);
+    }
+
+    /* Platform tabs mobile */
+    .platform-tabs {
+        gap: var(--space-1);
+        padding: var(--space-1);
+        margin-bottom: var(--space-4);
+    }
+
+    .platform-tab {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--font-size-xs);
+        min-width: auto;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .platform-tab span {
+        display: none;
+    }
+
+    .platform-tab svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Client items mobile */
+    .client-item {
+        padding: var(--space-4);
+    }
+
+    .client-item.featured::before {
+        font-size: 10px;
+        padding: 2px var(--space-1);
+        top: var(--space-2);
+        right: var(--space-2);
+    }
+
+    .client-header {
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+    }
+
+    .client-icon {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-base);
+    }
+
+    .client-info h4 {
+        font-size: var(--font-size-base);
+    }
+
+    .client-info p {
+        font-size: var(--font-size-xs);
+    }
+
+    .client-actions {
+        gap: var(--space-1);
+    }
+
+    .client-btn {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--font-size-xs);
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* Input group mobile */
+    .input-group {
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+    }
+
+    .subscription-input {
+        font-size: var(--font-size-sm);
+        padding: var(--space-3);
+    }
+
+    .copy-button {
+        width: 100%;
+        height: 44px;
+        justify-content: center;
+    }
+
+    /* Buttons mobile */
+    .btn {
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--font-size-sm);
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Modal mobile */
+    .modal {
+        padding: var(--space-3);
+    }
+
+    .modal-content {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+    }
+
+    .modal-header {
+        padding: var(--space-4);
+    }
+
+    .modal-body {
+        padding: var(--space-4);
+    }
+
+    /* Footer mobile */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-3);
+    }
+
+    .footer-links {
+        gap: var(--space-4);
+    }
+
+    /* Toast mobile */
+    .toast {
+        bottom: var(--space-4);
+        right: var(--space-4);
+        left: var(--space-4);
+        transform: translateY(100%);
+    }
+
+    .toast.show {
+        transform: translateY(0);
+    }
+
+    .toast-content {
+        padding: var(--space-3) var(--space-4);
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--space-2);
+    }
+
+    .hero-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .card {
+        padding: var(--space-3);
+    }
+
+    .platform-tab {
+        padding: var(--space-2);
+    }
+
+    .client-item {
+        padding: var(--space-3);
+    }
+
+    .client-btn {
+        padding: var(--space-2);
+        font-size: 11px;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 767px) and (orientation: landscape) {
+    .hero {
+        margin-bottom: var(--space-8);
+    }
+
+    .hero-title {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--space-3);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-2);
+    }
+
+    .stat-card {
+        padding: var(--space-3);
+    }
+}
+
+/* Touch improvements */
+@media (hover: none) and (pointer: coarse) {
+    .platform-tab,
+    .client-btn,
+    .btn,
+    .copy-button {
+        min-height: 44px;
+    }
+
+    .platform-tab {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .client-btn {
+        padding: var(--space-3) var(--space-4);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .client-icon {
+        background-image: linear-gradient(135deg, var(--primary), var(--tertiary));
+    }
+}
+
+/* Reduced motion for mobile */
+@media (prefers-reduced-motion: reduce) {
+    .client-item:hover,
+    .platform-tab:hover,
+    .client-btn:hover {
+        transform: none;
+    }
+}
+
+/* Dark mode adjustments for mobile */
+@media (max-width: 767px) {
+    [data-theme="dark"] .client-item.featured {
+        background: linear-gradient(135deg, var(--primary-container), var(--surface));
+    }
+    
+    [data-theme="dark"] .platform-tabs {
+        background-color: var(--surface);
+        border: 1px solid var(--outline-variant);
+    }
+}
+
+</style>
+<!DOCTYPE html>
+<html lang="ru" data-theme="system">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Subscription Management - Управление подпиской">
+    <meta name="theme-color" content="#6750A4">
+    <title>Subscription Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+                        <path d="M8 12h16v8H8z" fill="white" opacity="0.9"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#6750A4"/>
+                                <stop offset="1" stop-color="#7D5260"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">SubManager</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                        <svg class="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Добро пожаловать в
+                        <span class="gradient-text">управление подпиской</span>
+                    </h1>
+                    <p class="hero-description">
+                        Современный и удобный способ управления вашей подпиской. 
+                        Отслеживайте использование, управляйте настройками и получайте актуальную информацию.
+                    </p>
+                </div>
+            </section>
+
+            <!-- User Info Card -->
+            <section class="user-section">
+                <div class="card user-card">
+                    <div class="card-header">
+                        <div class="user-avatar">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+                                <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="user-info">
+                            <h2 class="user-name" id="username">Загрузка...</h2>
+                            <span class="user-status" id="status">Проверка статуса...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Grid -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-title">Срок действия</h3>
+                            <p class="stat-value" id="expire_date">Загрузка...</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/>
+                                <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2"/>
+                                <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-title">Использовано</h3>
+                            <p class="stat-value" id="used_traffic">Загрузка...</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/>
+                                <polyline points="17,8 12,3 7,8" stroke="currentColor" stroke-width="2"/>
+                                <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-title">Лимит трафика</h3>
+                            <p class="stat-value" id="data_limit">Загрузка...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Usage Progress -->
+            <section class="usage-section">
+                <div class="card usage-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Использование трафика</h3>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="usage_progress"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span class="progress-used" id="progress_used">0 GB</span>
+                            <span class="progress-total" id="progress_total">0 GB</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Client Selection -->
+            <section class="client-section">
+                <div class="card client-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Выберите клиент для вашей платформы</h3>
+                        <p class="card-description">Установите подходящий VPN клиент и настройте подписку</p>
+                    </div>
+                    
+                    <!-- Platform Tabs -->
+                    <div class="platform-tabs">
+                        <button class="platform-tab active" data-platform="android" id="tab-android">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M17.523 15.3414c-.4878 0-.8823-.4-.8823-.8927 0-.4928.3945-.8928.8823-.8928s.8823.4.8823.8928c0 .4927-.3945.8927-.8823.8927zM6.477 15.3414c-.4878 0-.8823-.4-.8823-.8927 0-.4928.3945-.8928.8823-.8928s.8823.4.8823.8928c0 .4927-.3945.8927-.8823.8927z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M4.5 13.5L8 9l8 0 3.5 4.5" stroke="currentColor" stroke-width="2"/>
+                                <path d="M8 9V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2"/>
+                                <path d="M4.5 13.5v4a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>Android</span>
+                        </button>
+                        <button class="platform-tab" data-platform="ios" id="tab-ios">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <line x1="12" y1="18" x2="12.01" y2="18" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>iOS</span>
+                        </button>
+                        <button class="platform-tab" data-platform="windows" id="tab-windows">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>Windows</span>
+                        </button>
+                        <button class="platform-tab" data-platform="macos" id="tab-macos">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>macOS</span>
+                        </button>
+                        <button class="platform-tab" data-platform="linux" id="tab-linux">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+                                <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>Linux</span>
+                        </button>
+                    </div>
+
+                    <!-- Client Content -->
+                    <div class="client-content">
+                        <div class="platform-content active" id="content-android">
+                            <div class="clients-grid" id="android-clients">
+                                <!-- Android clients will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="platform-content" id="content-ios">
+                            <div class="clients-grid" id="ios-clients">
+                                <!-- iOS clients will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="platform-content" id="content-windows">
+                            <div class="clients-grid" id="windows-clients">
+                                <!-- Windows clients will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="platform-content" id="content-macos">
+                            <div class="clients-grid" id="macos-clients">
+                                <!-- macOS clients will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="platform-content" id="content-linux">
+                            <div class="clients-grid" id="linux-clients">
+                                <!-- Linux clients will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subscription URL Section -->
+                    <div class="subscription-url-section">
+                        <div class="subscription-header">
+                            <h4 class="subscription-title">Ссылка подписки</h4>
+                            <p class="subscription-description">Или используйте прямую ссылку для ручной настройки</p>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="subscription-input" id="subscription-url" readonly placeholder="Загрузка ссылки подписки...">
+                            <button class="copy-button" id="copyButton" aria-label="Копировать ссылку">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-secondary" id="qrCodeButton">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="16" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="3" y="16" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M21 16h-3a2 2 0 0 0-2 2v3" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M21 21v.01" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 7v3a2 2 0 0 1-2 2H7" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M3 12h.01" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 3h.01" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 16v.01" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M16 12h1" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M21 12v.01" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 21v-1" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                                QR код
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">© 2025 SubManager. Современное управление подписками.</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Поддержка</a>
+                    <a href="#" class="footer-link">Документация</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for QR Code -->
+    <div class="modal" id="qrModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">QR код подписки</h3>
+                <button class="modal-close" id="modalClose" aria-label="Закрыть">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+                        <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="qr-container" id="qrContainer">
+                    <div class="qr-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                            <rect x="16" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                            <rect x="3" y="16" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <p>Генерация QR кода...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="toast-message" id="toastMessage">Ссылка скопирована!</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script>// Theme Management
+class ThemeManager {
+    constructor() {
+        this.theme = localStorage.getItem('theme') || 'system';
+        this.init();
+    }
+
+    init() {
+        this.applyTheme();
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if (this.theme === 'system') {
+                this.applyTheme();
+            }
+        });
+    }
+
+    toggleTheme() {
+        const themes = ['light', 'dark', 'system'];
+        const currentIndex = themes.indexOf(this.theme);
+        this.theme = themes[(currentIndex + 1) % themes.length];
+        
+        localStorage.setItem('theme', this.theme);
+        this.applyTheme();
+        this.showToast(`Тема изменена на ${this.getThemeDisplayName()}`);
+    }
+
+    applyTheme() {
+        let actualTheme = this.theme;
+        
+        if (this.theme === 'system') {
+            actualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        
+        document.documentElement.setAttribute('data-theme', actualTheme);
+        
+        // Update meta theme-color
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', actualTheme === 'dark' ? '#10090D' : '#6750A4');
+        }
+    }
+
+    getThemeDisplayName() {
+        const names = {
+            light: 'светлую',
+            dark: 'тёмную',
+            system: 'системную'
+        };
+        return names[this.theme] || this.theme;
+    }
+
+    showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        if (toast && toastMessage) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    }
+}
+
+// Client Manager
+class ClientManager {
+    constructor() {
+        this.userData = {};
+        this.subscriptionUrl = '';
+        this.clientsConfig = {};
+        this.currentPlatform = 'android';
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.loadClientsConfig();
+        this.loadMockData(); // В реальном приложении здесь будет загрузка данных с сервера
+    }
+
+    async loadClientsConfig() {
+        try {
+            const response = await fetch('./app-config.json');
+            this.clientsConfig = await response.json();
+            this.renderClients();
+        } catch (error) {
+            console.error('Failed to load clients config:', error);
+            this.loadDefaultClients();
+        }
+    }
+
+    loadDefaultClients() {
+        // Fallback конфигурация клиентов
+        this.clientsConfig = {
+            android: [
+                {
+                    id: 'v2rayng',
+                    name: 'v2rayNG',
+                    isFeatured: true,
+                    urlScheme: 'v2rayng://install-config?url=',
+                    installationStep: {
+                        buttons: [
+                            {
+                                buttonLink: 'https://play.google.com/store/apps/details?id=com.v2ray.ang',
+                                buttonText: { ru: 'Открыть в Google Play' }
+                            }
+                        ],
+                        description: { ru: 'Установите v2rayNG из Google Play Store.' }
+                    },
+                    addSubscriptionStep: {
+                        description: { ru: 'Нажмите кнопку ниже, чтобы добавить подписку' }
+                    },
+                    connectAndUseStep: {
+                        description: { ru: 'Откройте v2rayNG, выберите сервер и нажмите кнопку питания для подключения.' }
+                    }
+                }
+            ],
+            ios: [
+                {
+                    id: 'happ',
+                    name: 'Happ',
+                    isFeatured: true,
+                    urlScheme: 'happ://add/',
+                    installationStep: {
+                        buttons: [
+                            {
+                                buttonLink: 'https://apps.apple.com/us/app/happ-proxy-utility/id6504287215',
+                                buttonText: { ru: 'Открыть в App Store' }
+                            }
+                        ],
+                        description: { ru: 'Откройте страницу в App Store и установите приложение.' }
+                    },
+                    addSubscriptionStep: {
+                        description: { ru: 'Нажмите кнопку ниже, чтобы добавить подписку' }
+                    },
+                    connectAndUseStep: {
+                        description: { ru: 'Откройте приложение и подключитесь к серверу' }
+                    }
+                }
+            ],
+            pc: [
+                {
+                    id: 'v2rayn',
+                    name: 'v2rayN (Windows)',
+                    isFeatured: true,
+                    urlScheme: 'v2rayn://add-servers?url=',
+                    installationStep: {
+                        buttons: [
+                            {
+                                buttonLink: 'https://github.com/2dust/v2rayN/releases',
+                                buttonText: { ru: 'Скачать для Windows' }
+                            }
+                        ],
+                        description: { ru: 'Скачайте и установите v2rayN для Windows с GitHub releases.' }
+                    },
+                    addSubscriptionStep: {
+                        description: { ru: 'Нажмите кнопку ниже, чтобы добавить подписку' }
+                    },
+                    connectAndUseStep: {
+                        description: { ru: 'Откройте v2rayN, выберите сервер и нажмите подключиться для запуска VPN.' }
+                    }
+                }
+            ]
+        };
+        this.renderClients();
+    }
+
+    setupEventListeners() {
+        // Platform tabs
+        document.querySelectorAll('.platform-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const platform = e.currentTarget.dataset.platform;
+                this.switchPlatform(platform);
+            });
+        });
+
+        // Copy button
+        const copyButton = document.getElementById('copyButton');
+        if (copyButton) {
+            copyButton.addEventListener('click', () => this.copySubscriptionUrl());
+        }
+
+        // QR code button
+        const qrCodeButton = document.getElementById('qrCodeButton');
+        if (qrCodeButton) {
+            qrCodeButton.addEventListener('click', () => this.showQRCode());
+        }
+
+        // Modal close events
+        const modalClose = document.getElementById('modalClose');
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const modal = document.getElementById('qrModal');
+
+        if (modalClose) {
+            modalClose.addEventListener('click', () => this.hideModal());
+        }
+
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', () => this.hideModal());
+        }
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
+                this.hideModal();
+            }
+        });
+    }
+
+    switchPlatform(platform) {
+        // Update active tab
+        document.querySelectorAll('.platform-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById(`tab-${platform}`).classList.add('active');
+
+        // Update active content
+        document.querySelectorAll('.platform-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        // Map platform names to content IDs
+        const platformMap = {
+            'android': 'android',
+            'ios': 'ios',
+            'windows': 'windows',
             'macos': 'macos',
             'linux': 'linux'
         };
-
+        
         const contentId = platformMap[platform] || platform;
         const contentElement = document.getElementById(`content-${contentId}`);
         if (contentElement) {
@@ -15,10 +1898,10 @@ ndows': 'windows',
     renderClients() {
         // Render Android clients
         this.renderPlatformClients('android', 'android-clients');
-
+        
         // Render iOS clients
         this.renderPlatformClients('ios', 'ios-clients');
-
+        
         // Render PC clients for Windows, macOS, and Linux
         this.renderPlatformClients('pc', 'windows-clients');
         this.renderPlatformClients('pc', 'macos-clients');
@@ -86,17 +1969,17 @@ ndows': 'windows',
         }
 
         let finalUrl = this.subscriptionUrl;
-
+        
         if (needsBase64) {
             finalUrl = btoa(finalUrl);
         }
 
         const clientUrl = urlScheme + encodeURIComponent(finalUrl);
-
+        
         try {
             window.location.href = clientUrl;
             this.showToast(`Попытка открыть в ${clientId}...`);
-
+            
             // If no client opens, show instructions after a delay
             setTimeout(() => {
                 this.showToast('Если клиент не открылся, установите его сначала');
@@ -144,7 +2027,7 @@ ndows': 'windows',
             // Expiry date
             const expiryEl = document.getElementById('expire_date');
             if (expiryEl) {
-                expiryEl.textContent = this.userData.expire
+                expiryEl.textContent = this.userData.expire 
                     ? this.formatDate(this.userData.expire)
                     : 'Неизвестно';
             }
@@ -152,11 +2035,11 @@ ndows': 'windows',
             // Traffic usage
             const usedTrafficEl = document.getElementById('used_traffic');
             const dataLimitEl = document.getElementById('data_limit');
-
+            
             if (usedTrafficEl && this.userData.used_traffic) {
                 usedTrafficEl.textContent = this.formatTraffic(this.userData.used_traffic);
             }
-
+            
             if (dataLimitEl && this.userData.data_limit) {
                 dataLimitEl.textContent = this.formatTraffic(this.userData.data_limit);
             }
@@ -173,11 +2056,11 @@ ndows': 'windows',
             // Update progress labels
             const progressUsed = document.getElementById('progress_used');
             const progressTotal = document.getElementById('progress_total');
-
+            
             if (progressUsed && this.userData.used_traffic) {
                 progressUsed.textContent = this.formatTraffic(this.userData.used_traffic);
             }
-
+            
             if (progressTotal && this.userData.data_limit) {
                 progressTotal.textContent = this.formatTraffic(this.userData.data_limit);
             }
@@ -232,7 +2115,7 @@ ndows': 'windows',
 
             await navigator.clipboard.writeText(subscriptionInput.value);
             this.showToast('Ссылка подписки скопирована!');
-
+            
             // Visual feedback
             const copyButton = document.getElementById('copyButton');
             if (copyButton) {
@@ -243,7 +2126,7 @@ ndows': 'windows',
             }
         } catch (error) {
             console.error('Failed to copy:', error);
-
+            
             // Fallback for older browsers
             const subscriptionInput = document.getElementById('subscription-url');
             if (subscriptionInput) {
@@ -259,11 +2142,11 @@ ndows': 'windows',
     showQRCode() {
         const modal = document.getElementById('qrModal');
         const qrContainer = document.getElementById('qrContainer');
-
+        
         if (!modal || !qrContainer) return;
 
         modal.classList.add('show');
-
+        
         // Generate QR code (using a simple text representation for demo)
         // In a real application, you would use a QR code library like qrcode.js
         this.generateQRCode(qrContainer, this.subscriptionUrl);
@@ -273,8 +2156,8 @@ ndows': 'windows',
         // Simple QR code placeholder (in real app, use qrcode.js or similar)
         container.innerHTML = `
             <div style="
-                width: 200px;
-                height: 200px;
+                width: 200px; 
+                height: 200px; 
                 background: linear-gradient(45deg, #6750A4, #7D5260);
                 border-radius: 12px;
                 display: flex;
@@ -307,11 +2190,11 @@ ndows': 'windows',
     showToast(message) {
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toastMessage');
-
+        
         if (toast && toastMessage) {
             toastMessage.textContent = message;
             toast.classList.add('show');
-
+            
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
@@ -322,13 +2205,13 @@ ndows': 'windows',
         // Create error toast
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toastMessage');
-
+        
         if (toast && toastMessage) {
             toast.style.backgroundColor = 'var(--error-container)';
             toast.style.color = 'var(--on-error-container)';
             toastMessage.textContent = message;
             toast.classList.add('show');
-
+            
             setTimeout(() => {
                 toast.classList.remove('show');
                 // Reset toast colors
@@ -371,7 +2254,7 @@ class AnimationUtils {
             el.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-2px)';
             });
-
+            
             el.addEventListener('mouseleave', function() {
                 this.style.transform = '';
             });
@@ -386,7 +2269,7 @@ class PerformanceUtils {
         const imageUrls = [
             // Add any image URLs here
         ];
-
+        
         imageUrls.forEach(url => {
             const img = new Image();
             img.src = url;
@@ -408,21 +2291,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize managers
     const themeManager = new ThemeManager();
     const clientManager = new ClientManager();
-
+    
     // Make clientManager globally available for onclick handlers
     window.clientManager = clientManager;
-
+    
     // Initialize animations and performance optimizations
     AnimationUtils.observeElements();
     AnimationUtils.addHoverEffects();
     PerformanceUtils.preloadImages();
     PerformanceUtils.optimizeAnimations();
-
+    
     // Add loading state removal
     setTimeout(() => {
         document.body.classList.remove('loading');
     }, 100);
-
+    
     console.log('Client Manager initialized successfully');
 });
 
@@ -453,3 +2336,5 @@ window.SubscriptionManager = {
     AnimationUtils,
     PerformanceUtils
 };
+
+</script>
